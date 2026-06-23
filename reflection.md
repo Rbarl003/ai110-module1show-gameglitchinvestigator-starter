@@ -14,9 +14,9 @@ Document at least 3 bugs you found. Add rows as needed.
 
 | Input | Expected Behavior | Actual Behavior | Console Output / Error |
 |-------|-------------------|-----------------|------------------------|
-| | | | |
-| | | | |
-| | | | |
+|1      | Too low go Higher | Go lower instead| Same error after new game|
+|100    | Too high go lower | Go Higher instead| Same error after new game |
+|101    | Out of bound.     | Go Higher instead| No error message if you pick a number higher thn 100|
 
 ---
 
