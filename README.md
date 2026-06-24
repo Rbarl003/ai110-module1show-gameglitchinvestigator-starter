@@ -29,19 +29,20 @@ It wrote the code, ran away, and now the game is unplayable.
 A Streamlit number-guessing game: the app picks a secret number based on difficulty
 (Easy 1–20, Normal 1–100, Hard 1–50), and the player has a limited number of
 attempts to guess it, getting "higher/lower" hints and a score after each guess.
-
 - [ ] Detail which bugs you found.
-Inverted hints:* "Too High" told the player to go HIGHER (and vice versa).
-*Type-mismatch "glitch":* the secret was cast to a string on every even attempt,
+Glitch 1: "Too High" told the player to go HIGHER (and vice versa).
+Glitch 2: the secret was cast to a string on every even attempt,
 breaking the int-vs-string comparison so hints/results were wrong on those turns.
-*Off-by-one score:* a redundant `+ 1` made a first-attempt win score 80 instead
+Glitch 3: a redundant `+ 1` made a first-attempt win score 80 instead
 of 90.
 - [ ] Explain what fixes you applied.
-Refactored the logic into `logic_utils.py` and corrected the hint direction (moved
-the message text into an `OUTCOME_MESSAGES` map in `app.py`).
-Removed the even-attempt `str()` conversion so the secret stays an `int` every
-turn.Changed the win formula to `100 - 10 * attempt_number` and verified all fixes with `pytest` (6 tests passing).
-
+Backwards hints — "Too High" told you to guess higher (and the reverse), so you 
+could never win. Now it points the right way: too high → go lower, too low → go 
+higher.
+The secret kept "changing" — every other guess, the code turned the secret number 
+into text, so your number never matched it even when it was correct. Now the secret 
+always stays a number, so a right guess actually wins.
+Wrong score — a small math mistake made a first-try win worth 80 points instead of 90. Fixed the math so the score is correct.
 ## 📸 Demo Walkthrough
 
 *Normal difficulty (1–100). Secret: **63**. Starting score: **0**.*
