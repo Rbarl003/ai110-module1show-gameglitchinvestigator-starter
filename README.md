@@ -26,18 +26,30 @@ It wrote the code, ran away, and now the game is unplayable.
 ## 📝 Document Your Experience
 
 - [ ] Describe the game's purpose.
+A Streamlit number-guessing game: the app picks a secret number based on difficulty
+(Easy 1–20, Normal 1–100, Hard 1–50), and the player has a limited number of
+attempts to guess it, getting "higher/lower" hints and a score after each guess.
+
 - [ ] Detail which bugs you found.
+Inverted hints:* "Too High" told the player to go HIGHER (and vice versa).
+*Type-mismatch "glitch":* the secret was cast to a string on every even attempt,
+breaking the int-vs-string comparison so hints/results were wrong on those turns.
+*Off-by-one score:* a redundant `+ 1` made a first-attempt win score 80 instead
+of 90.
 - [ ] Explain what fixes you applied.
+Refactored the logic into `logic_utils.py` and corrected the hint direction (moved
+the message text into an `OUTCOME_MESSAGES` map in `app.py`).
+Removed the even-attempt `str()` conversion so the secret stays an `int` every
+turn.Changed the win formula to `100 - 10 * attempt_number` and verified all fixes with `pytest` (6 tests passing).
 
 ## 📸 Demo Walkthrough
 
-Describe your fixed game in numbered steps so a reader can follow along without watching a video:
-
-1. <!-- Describe this step -->
-2. <!-- Describe this step -->
-3. <!-- Describe this step -->
-4. <!-- Describe this step -->
-5. <!-- Add more steps as needed -->
+*Normal difficulty (1–100). Secret: **63**. Starting score: **0**.*
+1. Guess **40** → "Too Low → 📈 Go HIGHER!" → score **−5**
+2. Guess **70** → "Too High → 📉 Go LOWER!" → score **−10**
+3. Guess **65** → "Too High → 📉 Go LOWER!" → score **−15**
+4. Guess **63** → "🎉 Correct!" → win bonus `100 − 10×4 = 60` → final score **45**
+5. Game ends, reveals the secret, and "New Game 🔁" resets for another round.
 
 **Screenshot** *(optional)*: <!-- Insert a screenshot of your fixed, winning game here -->
 
